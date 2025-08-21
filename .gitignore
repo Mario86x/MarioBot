@@ -1,0 +1,28 @@
+# Ambiente virtuale
+venv/
+
+# Cache di Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# File temporanei ed editor
+*.swp
+*.swo
+*.tmp
+
+# Log
+*.log
+
+# Config locali di VS Code
+.vscode/
+
+# File di sistema
+.DS_Store
+Thumbs.db
+
+# secrets e chiavi API
+*.env
+*.key
