@@ -10,7 +10,6 @@ class TelegramBot:
         """Initialize the bot with token and LLM model."""
         self.token = token
         self.llm = llm
-        # Modified initialization to avoid proxy issues
         self.app = Application.builder().token(self.token).connect_timeout(30.0).read_timeout(30.0).build()
         self._setup_handlers()
 
@@ -21,10 +20,19 @@ class TelegramBot:
 
     async def _start_command(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle the /start command."""
-        await update.message.reply_text("Ciao! Sono il tuo chatbot AI 🤖\nPuoi chiedermi qualsiasi cosa!")
+        if context.args:
+            if context.args[0].lower() == "ardania":
+                context.user_data['attivo'] = True
+                await update.message.reply_text("Benvenuto in Ardania, puoi iniziare a chattare")
+                return
+        await update.message.reply_text("Ciao! Per iniziare a chattare, invia il comando /start seguito dalla parola speciale")
+        
 
     async def _handle_message(self, update: Update, context: ContextTypes.DEFAULT_TYPE):
         """Handle incoming messages using the LLM."""
+        if context.user_data.get('attivo') != True:
+            await update.message.reply_text("Devi prima inviare il comando /start seguito dalla parola speciale per iniziare a chattare.")
+            return
         try:
             user_message = update.message.text
             # Send "typing" action while processing

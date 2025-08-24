@@ -11,7 +11,9 @@ def init_llm(api_key):
     return llm
 
 def init_local_llm():
-    llm = Ollama(model="deepseek-r1:1.5b")
+    local_llm_name = os.getenv("LOCAL_LLM_NAME")
+    llm = Ollama(model=local_llm_name)
+    print(f"Using local LLM: {local_llm_name}")
     return llm
 
 
